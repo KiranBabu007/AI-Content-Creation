@@ -1,6 +1,19 @@
-const LandingPage =()=>{
+import { Button } from "@/components/ui/button"
+import Link from 'next/link'
+
+
+const LandingPage = () => {
     return <div>
-        <h1>Landing Page</h1>
+        <div>
+            <h1>Landing Page(Unprotected)</h1>
+        </div>
+        <div>
+            <Link href='/sign-in'>
+                <Button>sign-in</Button>
+            </Link>
+
+        </div>
+
     </div>
 }
 

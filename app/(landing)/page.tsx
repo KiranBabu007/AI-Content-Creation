@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
+import { UserButton } from "@clerk/nextjs"
 
 
 const LandingPage = () => {
@@ -11,6 +12,11 @@ const LandingPage = () => {
             <Link href='/sign-in'>
                 <Button>sign-in</Button>
             </Link>
+            <Link href='/sign-up'>
+                <Button>sign-up</Button>
+            </Link>
+
+            <UserButton />
 
         </div>
 

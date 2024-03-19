@@ -5,28 +5,36 @@ import Image from "next/image"
 
 import { cn } from "@/lib/utils";
 import { Montserrat } from "next/font/google";
+import { ImagePlusIcon, LayoutDashboard, MessageSquareCodeIcon, Settings } from "lucide-react";
 
 const poppins = Montserrat({ weight: '600', subsets: ['latin'] });
 
 const routes = [
     {
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      href: '/dashboard',
-      color: "text-sky-500"
+        label: 'Dashboard',
+        icon: LayoutDashboard,
+        href: '/dashboard',
+        color: "text-sky-500"
     },
     {
-      label: 'Conversation',
-      icon: MessageSquare,
-      href: '/conversation',
-      color: "text-violet-500",
+        label: 'Conversation',
+        icon: MessageSquareCodeIcon,
+        href: '/conversation',
+        color: "text-violet-500",
     },
     {
-      label: 'Image Generation',
-      icon: ImageIcon,
-      color: "text-pink-700",
-      href: '/image',
+        label: 'Image Generation',
+        icon: ImagePlusIcon,
+        color: "text-pink-700",
+        href: '/image',
     },
+    {
+        label: 'Settings',
+        icon: Settings,
+        href: '/settings',
+    }
+]
+
 const Sidebar = () => {
     return (
         <div className="space-y-4 py-4 flex flex-xol h-full bg-[#0D0F10]  text-white">
@@ -44,6 +52,24 @@ const Sidebar = () => {
                         Gen-X
                     </h1>
                 </Link>
+
+                <div className="space-y-4">
+                    {routes.map((route) => (
+                        <Link
+                            key={route.href}
+                            href={route.href}
+                            className={cn(
+                                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
+
+                            )}
+                        >
+                            <div className="flex items-center flex-1">
+                                <route.icon className={cn("h-8 mr-3", route.color)} />
+                                {route.label}
+                            </div>
+                        </Link>
+                    ))}
+                </div>
 
             </div>
 

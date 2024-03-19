@@ -30,8 +30,8 @@ export default function HomePage() {
     ];
 
     return (
-        <div className="bg-[#131619]">
-            <div className="mb-8 space-y-4 text-white">
+        <div>
+            <div className="mb-8 space-y-4 ">
                 <h2 className="text-2xl md:text-4xl font-bold text-center ">
                     Explore the power of AI
                 </h2>
@@ -46,11 +46,11 @@ export default function HomePage() {
                             <div className={cn("p-2 w-fit rounded-md ", tool.bgColor)}>
                                 <tool.icon className={cn("w-8 h-8", tool.color)} />
                             </div>
-                            <div className="font-semibold text-gray-300">
+                            <div className="font-semibold">
                                 {tool.label}
                             </div>
                         </div>
-                        <ArrowRight className="w-5 h-5 fill-current text-gray-700" />
+                        <ArrowRight className="w-5 h-5 fill-current" />
                     </Card>
                 ))}
             </div>

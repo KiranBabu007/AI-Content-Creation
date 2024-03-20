@@ -1,5 +1,4 @@
 "use client";
-
 import * as z from "zod";
 import axios from "axios";
 import { MessageSquare } from "lucide-react";
@@ -7,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import OpenAI from 'openai'
-
+import OpenAI from 'openai';
 import { BotAvatar } from "@/components/bot-avatar";
 import Heading from "@/components/heading";
 import { Button } from "@/components/ui/button";
@@ -19,13 +17,11 @@ import { cn } from "@/lib/utils";
 import { Loader } from "@/components/loader";
 import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
-
-
 import { formSchema } from "./constants";
 
 const ConversationPage = () => {
     const router = useRouter();
-    const [messages, setMessages] = useState<OpenAI.Chat.ChatCompletionMessageParam[]>([]);
+    const [messages, setMessages] = useState<string[]>([]);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -33,28 +29,45 @@ const ConversationPage = () => {
         }
     });
 
+    const client = new OpenAI({
+        apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+        baseURL: 'https://api.together.xyz/v1',
+        dangerouslyAllowBrowser: true
+    });
+
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const userMessage: OpenAI.Chat.ChatCompletionRequestMessage = { role: "user", content: values.prompt };
-            const newMessages = [...messages, userMessage];
+            const userMessage = values.prompt;
 
-            const response = await axios.post('/api/conversation', { messages: newMessages });
-            setMessages((current) => [...current, userMessage, response.data]);
 
-            form.reset();
-        } catch (error: any) {
-            if (error?.response?.status === 403) {
+            const response = await client.chat.completions.create({
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are an expert travel guide.',
+                    },
+                    {
+                        role: 'user',
+                        content: userMessage,
+                    },
+                ],
+                model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+            });
 
+            const assistantMessage = response.choices[0].message.content;
+
+
+            if (assistantMessage !== null) {
+                setMessages((prevMessages) => [...prevMessages, assistantMessage]);
             } else {
-                toast.error("Something went wrong.");
+                console.log("OpenAI response is null");
             }
-        } finally {
-            router.refresh();
+        } catch (error) {
+            console.error(error);
         }
     }
-
 
     return (
         <div>
@@ -89,7 +102,7 @@ const ConversationPage = () => {
                                     <FormItem className="col-span-12 lg:col-span-10">
                                         <FormControl className="m-0 p-0">
                                             <Input
-                                                className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                                                className=" border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                                 disabled={isLoading}
                                                 placeholder="How do I calculate the radius of a circle?"
                                                 {...field}
@@ -116,15 +129,15 @@ const ConversationPage = () => {
                     <div className="flex flex-col-reverse gap-y-4">
                         {messages.map((message) => (
                             <div
-                                key={message.content}
+                                key={message}
                                 className={cn(
                                     "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                                    message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                                    "bg-white border border-black/10"
                                 )}
                             >
-                                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                                <BotAvatar />
                                 <p className="text-sm">
-                                    {message.content}
+                                    {message}
                                 </p>
                             </div>
                         ))}

@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse, NextRequest } from "next/server";
 import { OpenAI } from "openai";
 
 const client = new OpenAI({
@@ -7,7 +8,7 @@ const client = new OpenAI({
     baseURL: 'https://api.together.xyz/v1',
 });
 
-export async function POST(req:any) {
+export async function POST(req: NextRequest, res: NextResponse) {
     try {
         const { userId } = auth();
         const body = await req.json();
@@ -30,7 +31,7 @@ export async function POST(req:any) {
             model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
         });
 
-        console.log(response.choices[0].message.content);
+        // console.log(response.choices[0].message.content);
 
         return new NextResponse(JSON.stringify(response.choices[0].message.content), { status: 200 });
     } catch (error) {

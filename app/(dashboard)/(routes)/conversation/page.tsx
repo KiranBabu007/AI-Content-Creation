@@ -25,8 +25,7 @@ import { formSchema } from "./constants";
 
 const ConversationPage = () => {
     const router = useRouter();
-
-    const [messages, setMessages] = useState<OpenAI.Chat.CreateChatCompletionRequestMessage[]>([])
+    const [messages, setMessages] = useState<OpenAI.Chat.ChatCompletionMessageParam[]>([]);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -38,8 +37,7 @@ const ConversationPage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const userMessage: OpenAI.Chat.CreateChatCompletionRequestMessage = { role: "user", content: values.prompt };
-
+            const userMessage: OpenAI.Chat.ChatCompletionRequestMessage = { role: "user", content: values.prompt };
             const newMessages = [...messages, userMessage];
 
             const response = await axios.post('/api/conversation', { messages: newMessages });
@@ -48,7 +46,7 @@ const ConversationPage = () => {
             form.reset();
         } catch (error: any) {
             if (error?.response?.status === 403) {
-                // proModal.onOpen();
+
             } else {
                 toast.error("Something went wrong.");
             }
@@ -56,6 +54,7 @@ const ConversationPage = () => {
             router.refresh();
         }
     }
+
 
     return (
         <div>

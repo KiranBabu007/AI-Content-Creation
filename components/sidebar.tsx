@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { Montserrat } from "next/font/google";
 import { ImagePlusIcon, LayoutDashboard, MessageSquareCodeIcon, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
+import kiran from "@/public/kiran.jpg";
+import { AnimatedTooltip } from "./ui/animated-tooltip";
 
 const poppins = Montserrat({ weight: '600', subsets: ['latin'] });
 
@@ -35,6 +37,17 @@ const routes = [
         href: '/settings',
     }
 ]
+
+const items = [
+    {
+        id: 1,
+        name: "Kiran Babu",
+        designation: "Developer",
+        // Use the imported image for the 'image' property
+        image: kiran.src,
+    },
+    // Add more items as needed
+];
 
 const Sidebar = () => {
 
@@ -74,6 +87,11 @@ const Sidebar = () => {
                             </div>
                         </Link>
                     ))}
+
+                </div>
+                <div className="w-full flex flex-col items-center justify-center mt-10">
+                    <p className="text-sm md:text-lg font-light text-zinc-400 my-3">Created by</p>
+                    <AnimatedTooltip items={items} />
                 </div>
 
             </div>

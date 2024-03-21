@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
 
 const font = Montserrat({
-    weight: "400",
+    weight: "600",
     style: "normal",
     subsets: ["latin"]
 })
@@ -20,10 +20,10 @@ export const LandingNavbar = () => {
     return (
         <nav className="p-4 bg-transparent flex items-center justify-between">
             <Link href="/" className="flex items-center">
-                <div className="relative h-8 w-8 mr-4">
-                    | <Image fill src="/gen.png" alt="Logo" />
+                <div className="relative h-11 w-12 mr-4">
+                    | <Image fill src="/logo.png" alt="Logo" />
                 </div>
-                <h1 className={cn("text-2xl font-bold text-white", font.className)}>
+                <h1 className={cn("text-4xl font-extrabold text-white", font.className)}>
                     Gen-X
                 </h1>
             </Link>

@@ -6,12 +6,12 @@ export const Loader = () => {
             <div className="w-10 h-10 relative animate-spin">
                 <Image
                     alt="Logo"
-                    src="/logo.png"
+                    src="/loader.png"
                     fill
                 />
             </div>
             <p className="text-sm text-muted-foreground">
-                Genius is thinking...
+                Genie is thinking...
             </p>
         </div>
     );

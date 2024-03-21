@@ -73,7 +73,7 @@ const ConversationPage = () => {
         <div>
             <Heading
                 title="Conversation"
-                description="Our most advanced conversation model."
+                description="Chat with Gen-X Genie to get answers to your questions."
                 icon={MessageSquare}
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"

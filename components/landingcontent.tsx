@@ -10,12 +10,7 @@ const testimonials = [
         name: "Elon Musk",
         title: "Founder of Tesla and SpaceX",
     },
-    {
-        quote:
-            "The development of full artificial intelligence could spell the end of the human race.",
-        name: "Stephen Hawking",
-        title: "Theoretical Physicist",
-    },
+
     {
         quote: "The question is not whether robots will be able to think, it's whether humans will be able to think without them.",
         name: "Garry Kasparov",
@@ -32,6 +27,11 @@ const testimonials = [
             "Artificial intelligence will reach human levels by around 2029. Follow that out further to, say, 2045, we will have multiplied the intelligence, the human biological machine intelligence of our civilization a billion-fold.",
         name: "Ray Kurzweil",
         title: "Director of Engineering at Google",
+    }, {
+        quote:
+            "The development of full artificial intelligence could spell the end of the human race.",
+        name: "Stephen Hawking",
+        title: "Theoretical Physicist",
     },
 ];
 

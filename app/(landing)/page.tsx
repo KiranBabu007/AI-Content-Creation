@@ -4,7 +4,7 @@ import { LandingNavbar } from "@/components/landingnavbar"
 
 
 const LandingPage = () => {
-    return <div className="h-full">
+    return <div className="h-full flex flex-col justify-evenly">
         <LandingNavbar />
         <LandingHero />
         <LandingContent />

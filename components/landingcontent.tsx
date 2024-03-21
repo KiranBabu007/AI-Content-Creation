@@ -37,7 +37,7 @@ const testimonials = [
 
 export const LandingContent = () => {
     return (
-        <div className=" rounded-md md:pt-20  sm:pt-20 flex flex-col antialiased bg-transparent  dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+        <div className=" rounded-md flex sm:mt-20 md:mt-20 lg:mt-0 xl:mt-0 flex-col antialiased bg-transparent  dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
             <InfiniteMovingCards
                 items={testimonials}
                 direction="right"

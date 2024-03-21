@@ -43,10 +43,10 @@ const items = [
         id: 1,
         name: "Kiran Babu",
         designation: "Developer",
-        // Use the imported image for the 'image' property
+     
         image: kiran.src,
     },
-    // Add more items as needed
+  
 ];
 
 const Sidebar = () => {

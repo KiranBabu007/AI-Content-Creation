@@ -7,7 +7,6 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import OpenAI from 'openai';
-import { BotAvatar } from "@/components/bot-avatar";
 import Heading from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,57 +14,64 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { Loader } from "@/components/loader";
-import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
-import { formSchema } from "./constants";
+import { formSchema, amountOptions, resolutionOptions } from "./constants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 
 const ImagePage = () => {
+
   const router = useRouter();
-  const [messages, setMessages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      prompt: ""
+      prompt: "",
+      amount: "1",
+      resolution: "512x512"
     }
-  });
-
-  const client = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    baseURL: 'https://api.together.xyz/v1',
-    dangerouslyAllowBrowser: true
   });
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage = values.prompt;
+      setImages([]);
 
-
-      const response = await client.chat.completions.create({
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an expert of everything your name is Gen-x Genie.',
+      const response = await axios.post(
+        "https://api.together.xyz/v1/images",
+        {
+          prompt: values.prompt,
+          n: parseInt(values.amount, 10),
+          size: values.resolution,
+          model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.TOGETHER_API_KEY}`,
           },
-          {
-            role: 'user',
-            content: userMessage,
-          },
-        ],
-        model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
-      });
+        }
+      );
 
-      const assistantMessage = response.choices[0].message.content;
+      const urls = response.data.map((image: { url: string }) => image.url);
 
+      setImages(urls);
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
 
-      if (assistantMessage !== null) {
-        setMessages((prevMessages) => [...prevMessages, assistantMessage]);
       } else {
-        console.log("OpenAI response is null");
+        toast.error("Something went wrong.");
       }
-    } catch (error) {
-      console.error(error);
+    } finally {
+      router.refresh();
     }
   }
 
@@ -99,15 +105,75 @@ const ImagePage = () => {
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="col-span-12 lg:col-span-10">
+                  <FormItem className="col-span-12 lg:col-span-6">
                     <FormControl className="m-0 p-0">
                       <Input
                         className=" border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="How do I calculate the radius of a circle?"
+                        placeholder="a painting of Mona Lisa"
                         {...field}
                       />
                     </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-2">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {amountOptions.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="resolution"
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-2">
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {resolutionOptions.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 )}
               />
@@ -119,29 +185,14 @@ const ImagePage = () => {
         </div>
         <div className="space-y-4 mt-4">
           {isLoading && (
-            <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+            <div className="p-20">
               <Loader />
             </div>
           )}
-          {messages.length === 0 && !isLoading && (
-            <Empty label="No conversation started." />
+          {images.length === 0 && !isLoading && (
+            <Empty label="No Images Generated." />
           )}
-          <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
-              <div
-                key={message}
-                className={cn(
-                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                  "bg-white border border-black/10"
-                )}
-              >
-                <BotAvatar />
-                <p className="text-sm">
-                  {message}
-                </p>
-              </div>
-            ))}
-          </div>
+
         </div>
       </div>
     </div>

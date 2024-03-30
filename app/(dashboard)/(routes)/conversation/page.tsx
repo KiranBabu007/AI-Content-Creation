@@ -1,10 +1,9 @@
 "use client";
 import * as z from "zod";
-import axios from "axios";
+import { useUser } from '@clerk/clerk-react';
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import OpenAI from 'openai';
 import { BotAvatar } from "@/components/bot-avatar";
@@ -15,13 +14,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { Loader } from "@/components/loader";
-import { UserAvatar } from "@/components/user-avatar";
 import { Empty } from "@/components/ui/empty";
 import { formSchema } from "./constants";
 
 const ConversationPage = () => {
     const router = useRouter();
     const [messages, setMessages] = useState<string[]>([]);
+    const [promptCount, setPromptCount] = useState<number>(0);
+    const user = useUser();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -35,7 +36,10 @@ const ConversationPage = () => {
         dangerouslyAllowBrowser: true
     });
 
+
+
     const isLoading = form.formState.isSubmitting;
+
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
@@ -64,6 +68,8 @@ const ConversationPage = () => {
             } else {
                 console.log("OpenAI response is null");
             }
+
+        
         } catch (error) {
             console.error(error);
         }

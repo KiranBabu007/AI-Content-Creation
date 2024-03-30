@@ -8,9 +8,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "@/components/sidebar";
 import { getApiLimitCount } from "@/lib/api-limit";
 
-export const MobileSidebar = async ({
-
-}) => {
+export const MobileSidebar = ({
+    apiLimitCount = 0,
+}: {
+    apiLimitCount: number;
+})=> {
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
@@ -21,7 +23,6 @@ export const MobileSidebar = async ({
         return null;
     }
 
-    const apiLimitCount = await getApiLimitCount();
     return (
         <Sheet>
             <SheetTrigger>

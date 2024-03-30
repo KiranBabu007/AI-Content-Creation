@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import * as z from "zod";
 import { useUser } from '@clerk/clerk-react';
 import { MessageSquare } from "lucide-react";
@@ -16,11 +16,12 @@ import { cn } from "@/lib/utils";
 import { Loader } from "@/components/loader";
 import { Empty } from "@/components/ui/empty";
 import { formSchema } from "./constants";
+import { checkApiLimit } from "@/lib/api-limit";
 
 const ConversationPage = () => {
     const router = useRouter();
     const [messages, setMessages] = useState<string[]>([]);
-    const [promptCount, setPromptCount] = useState<number>(0);
+    const [limit, setLimit] = useState<boolean>(false);
     const user = useUser();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -36,15 +37,18 @@ const ConversationPage = () => {
         dangerouslyAllowBrowser: true
     });
 
-
-
     const isLoading = form.formState.isSubmitting;
 
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        // const freeTrial = await checkApiLimit();
+        // if (!freeTrial) {
+        //     setLimit(true)
+        //     console.log("Limit Reached")
+        //     return
+        // }
         try {
             const userMessage = values.prompt;
-
 
             const response = await client.chat.completions.create({
                 messages: [
@@ -69,7 +73,7 @@ const ConversationPage = () => {
                 console.log("OpenAI response is null");
             }
 
-        
+
         } catch (error) {
             console.error(error);
         }

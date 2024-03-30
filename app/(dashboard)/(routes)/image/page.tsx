@@ -1,6 +1,6 @@
 "use client";
 import * as z from "zod";
-
+import axios from "axios";
 import Image from "next/image";
 import { Download, ImageIcon, MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -28,6 +28,8 @@ import {
 
 
 
+
+
 const ImagePage = () => {
 
   const router = useRouter();
@@ -51,13 +53,17 @@ const ImagePage = () => {
   const isLoading = form.formState.isSubmitting;
 
 
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      
 
+      const response1 = await axios.post('/api/conversation', { images });
+     
       const response = await client.images.generate({
         model: "SG161222/Realistic_Vision_V3.0_VAE",
         prompt: values.prompt,
-        size: values.resolution as "256x256" | "512x512" | "1024x1024" | "1792x1024" | "1024x1792" | null | undefined
+
       });
 
       const imageUrl = response.data[0].b64_json; // Directly extract the UR

@@ -1,5 +1,6 @@
 "use client"
 import * as z from "zod";
+import axios from "axios";
 import { useUser } from '@clerk/clerk-react';
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -49,8 +50,8 @@ const ConversationPage = () => {
         // }
         try {
             const userMessage = values.prompt;
-
-            const response = await client.chat.completions.create({
+            const response1 = await axios.post('/api/conversation', { messages });
+            const response2 = await client.chat.completions.create({
                 messages: [
                     {
                         role: 'system',
@@ -64,7 +65,7 @@ const ConversationPage = () => {
                 model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
             });
 
-            const assistantMessage = response.choices[0].message.content;
+            const assistantMessage = response2.choices[0].message.content;
 
 
             if (assistantMessage !== null) {
@@ -135,6 +136,11 @@ const ConversationPage = () => {
                     )}
                     {messages.length === 0 && !isLoading && (
                         <Empty label="No conversation started." />
+                    )}
+                    {limit && (
+                        <div className="text-red-500 font-semibold mt-4">
+                            Limit Reached. Please try again later.
+                        </div>
                     )}
                     <div className="flex flex-col-reverse gap-y-4">
                         {messages.map((message) => (

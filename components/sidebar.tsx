@@ -9,6 +9,7 @@ import { ImagePlusIcon, LayoutDashboard, MessageSquareCodeIcon, Settings } from 
 import { usePathname } from "next/navigation";
 import kiran from "@/public/kiran.jpg";
 import { AnimatedTooltip } from "./ui/animated-tooltip";
+import { FreeCounter } from "./free-counter";
 
 const poppins = Montserrat({ weight: '600', subsets: ['latin'] });
 
@@ -31,11 +32,7 @@ const routes = [
         color: "text-pink-700",
         href: '/image',
     },
-    {
-        label: 'Settings',
-        icon: Settings,
-        href: '/settings',
-    }
+
 ]
 
 const items = [
@@ -43,13 +40,21 @@ const items = [
         id: 1,
         name: "Kiran Babu",
         designation: "Developer",
-     
+
         image: kiran.src,
     },
-  
+
 ];
 
-const Sidebar = () => {
+interface SidebarProps {
+    apiLimitCount: number;
+}
+
+const Sidebar = ({
+    apiLimitCount = 0,
+}: {
+    apiLimitCount: number;
+}) => {
 
     const pathname = usePathname()
 
@@ -89,9 +94,17 @@ const Sidebar = () => {
                     ))}
 
                 </div>
-                <div className="w-full flex flex-col items-center justify-center mt-10">
-                    <p className="text-sm md:text-lg font-light text-zinc-400 my-3">Created by</p>
+                <div className="w-full flex flex-col items-center justify-between gap-5 ">
+                    <p className="text-sm md:text-lg font-light text-zinc-400">Created by</p>
                     <AnimatedTooltip items={items} />
+
+                </div>
+                <div className="w-full mt-20">
+                    <FreeCounter
+                        apiLimitCount={apiLimitCount}
+
+                    />
+
                 </div>
 
             </div>

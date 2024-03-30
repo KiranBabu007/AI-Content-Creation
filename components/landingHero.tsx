@@ -32,7 +32,8 @@ export const LandingHero = () => {
                 <div>
                     <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
                         <Button
-                            borderRadius="1.75rem"
+                            
+                            borderRadius="1.5rem"
                             className="bg-white dark:bg-slate-900 text-black dark:text-white border-neutral-200 dark:border-slate-800"
                         >
                             Start Generating
@@ -40,7 +41,7 @@ export const LandingHero = () => {
                     </Link>
                 </div>
             </div>
-        </div>
+        </div >
 
     );
 };

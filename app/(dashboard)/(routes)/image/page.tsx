@@ -1,7 +1,8 @@
 "use client";
 import * as z from "zod";
-import axios from "axios";
-import { ImageIcon, MessageSquare } from "lucide-react";
+
+import Image from "next/image";
+import { Download, ImageIcon, MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { Loader } from "@/components/loader";
 import { Empty } from "@/components/ui/empty";
 import { formSchema, amountOptions, resolutionOptions } from "./constants";
+import { Card, CardFooter } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -23,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+
 
 
 const ImagePage = () => {
@@ -39,34 +42,35 @@ const ImagePage = () => {
     }
   });
 
+  const client = new OpenAI({
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    baseURL: 'https://api.together.xyz/v1',
+    dangerouslyAllowBrowser: true
+  });
+
   const isLoading = form.formState.isSubmitting;
+
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setImages([]);
 
-      const response = await axios.post(
-        "https://api.together.xyz/v1/images",
-        {
-          prompt: values.prompt,
-          n: parseInt(values.amount, 10),
-          size: values.resolution,
-          model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.TOGETHER_API_KEY}`,
-          },
-        }
-      );
+      const response = await client.images.generate({
+        model: "runwayml/stable-diffusion-v1-5",
+        prompt: values.prompt,
+        n: parseInt(values.amount, 10),
 
-      const urls = response.data.map((image: { url: string }) => image.url);
+      });
 
-      setImages(urls);
+      const imageUrl = response.data[0].b64_json; // Directly extract the UR
+
+      if (imageUrl) {
+        setImages([imageUrl]);
+      } else {
+        toast.error("Image URL is undefined.");
+      }
     } catch (error: any) {
       if (error?.response?.status === 403) {
-
+        // Handle 403 error
       } else {
         toast.error("Something went wrong.");
       }
@@ -112,6 +116,7 @@ const ImagePage = () => {
                         disabled={isLoading}
                         placeholder="a painting of Mona Lisa"
                         {...field}
+
                       />
                     </FormControl>
                   </FormItem>
@@ -192,6 +197,25 @@ const ImagePage = () => {
           {images.length === 0 && !isLoading && (
             <Empty label="No Images Generated." />
           )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+            {images.map((src) => (
+              <Card key={src} className="rounded-lg overflow-hidden">
+                <div className="relative aspect-square">
+                  <Image
+                    src={`data:image/png;base64,${src}`}
+                    fill
+                    alt="Generated image"
+                  />
+                </div>
+                <CardFooter className="p-2">
+                  <Button onClick={() => window.open(src)} variant="secondary" className="w-full">
+                    <Download className="h-4 w-4 mr-2" />
+                    Download
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
 
         </div>
       </div>

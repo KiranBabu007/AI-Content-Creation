@@ -94,7 +94,8 @@ const Sidebar = ({
                     ))}
 
                 </div>
-                <div className="w-full flex flex-col items-center justify-between gap-5 ">
+
+                <div className="w-full h-[10vh] flex flex-col items-center justify-center gap-2 mt-5">
                     <p className="text-sm md:text-lg font-light text-zinc-400">Created by</p>
                     <AnimatedTooltip items={items} />
 

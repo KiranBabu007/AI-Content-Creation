@@ -119,7 +119,7 @@ const ImagePage = () => {
                       <Input
                         className=" border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
-                        placeholder="a painting of Mona Lisa"
+                        placeholder="A painting of Mona Lisa"
                         {...field}
 
                       />

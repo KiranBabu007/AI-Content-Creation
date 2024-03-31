@@ -57,8 +57,8 @@ const ImagePage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       
-
-      const response1 = await axios.post('/api/conversation', { images });
+      const userMessage = values.prompt;
+      const response1 = await axios.post('/api/conversation', {messages: userMessage});
      
       const response = await client.images.generate({
         model: "SG161222/Realistic_Vision_V3.0_VAE",

@@ -61,7 +61,7 @@ const ImagePage = () => {
       const response1 = await axios.post('/api/conversation', { messages: userMessage });
 
       const response = await client.images.generate({
-        model: "stabilityai/stable-diffusion-2-1",
+        model: "SG161222/Realistic_Vision_V3.0_VAE",
         prompt: values.prompt,
 
       });

@@ -56,12 +56,12 @@ const ImagePage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      
+
       const userMessage = values.prompt;
-      const response1 = await axios.post('/api/conversation', {messages: userMessage});
-     
+      const response1 = await axios.post('/api/conversation', { messages: userMessage });
+
       const response = await client.images.generate({
-        model: "SG161222/Realistic_Vision_V3.0_VAE",
+        model: "stabilityai/stable-diffusion-2-1",
         prompt: values.prompt,
 
       });
@@ -184,12 +184,7 @@ const ImagePage = () => {
                     alt="Generated image"
                   />
                 </div>
-                <CardFooter className="p-2">
-                  <Button onClick={() => window.open(src)} variant="secondary" className="w-full">
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
-                </CardFooter>
+                
               </Card>
             ))}
           </div>

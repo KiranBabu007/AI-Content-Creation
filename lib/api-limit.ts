@@ -72,12 +72,14 @@ export const createPrompt = async (content: string) => {
   }
 
   try {
-    return await prismadb.prompt.create({
+    await prismadb.prompt.create({
       data: {
         userId,
         content,
       },
     });
+
+    return { ok: true };
   } catch (error) {
     console.error("Error creating prompt:", error);
     throw new Error("Failed to create prompt");

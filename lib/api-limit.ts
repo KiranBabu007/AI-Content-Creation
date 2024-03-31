@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs";
 import prismadb from "@/lib/prismadb";
 import { MAX_FREE_COUNTS } from "@/constants";
 
-export const incrementApiLimit = async () => {
+export const incrementApiLimit = async (content: string) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -14,10 +14,17 @@ export const incrementApiLimit = async () => {
     where: { userId: userId },
   });
 
+
   if (userApiLimit) {
     await prismadb.userApiLimit.update({
       where: { userId: userId },
       data: { count: userApiLimit.count + 1 },
+    });
+    await prismadb.prompt.create({
+      data: {
+        userId,
+        content,
+      },
     });
   } else {
     await prismadb.userApiLimit.create({
@@ -64,24 +71,24 @@ export const getApiLimitCount = async () => {
   return userApiLimit.count;
 };
 
-export const createPrompt = async (content: string) => {
-  const { userId } = auth();
+// export const createPrompt = async (content: string) => {
+//   const { userId } = auth();
 
-  if (!userId) {
-    return 0;
-  }
+//   if (!userId) {
+//     return 0;
+//   }
 
-  try {
-    await prismadb.prompt.create({
-      data: {
-        userId,
-        content,
-      },
-    });
+//   try {
+//     await prismadb.prompt.create({
+//       data: {
+//         userId,
+//         content,
+//       },
+//     });
 
-    return { ok: true };
-  } catch (error) {
-    console.error("Error creating prompt:", error);
-    throw new Error("Failed to create prompt");
-  }
-};
+//     return { ok: true };
+//   } catch (error) {
+//     console.error("Error creating prompt:", error);
+//     throw new Error("Failed to create prompt");
+//   }
+// };

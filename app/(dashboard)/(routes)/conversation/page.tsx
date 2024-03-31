@@ -50,7 +50,7 @@ const ConversationPage = () => {
         // }
         try {
             const userMessage = values.prompt;
-            const response1 = await axios.post('/api/conversation', {messages: userMessage});
+            const response1 = await axios.post('/api/conversation', { messages: userMessage });
             const response2 = await client.chat.completions.create({
                 messages: [
                     {
@@ -62,7 +62,7 @@ const ConversationPage = () => {
                         content: userMessage,
                     },
                 ],
-                model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+                model: 'codellama/CodeLlama-70b-Instruct-hf',
             });
 
             const assistantMessage = response2.choices[0].message.content;

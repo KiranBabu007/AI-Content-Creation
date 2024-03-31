@@ -63,3 +63,17 @@ export const getApiLimitCount = async () => {
 
   return userApiLimit.count;
 };
+
+export const createPrompt = async (content: string) => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return 0;
+  }
+  return await prismadb.prompt.create({
+    data: {
+      userId,
+      content,
+    },
+  });
+};

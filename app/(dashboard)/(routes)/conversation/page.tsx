@@ -50,7 +50,7 @@ const ConversationPage = () => {
         // }
         try {
             const userMessage = values.prompt;
-            const response1 = await axios.post('/api/conversation', { userMessage, messages });
+            const response1 = await axios.post('/api/conversation', {messages: userMessage});
             const response2 = await client.chat.completions.create({
                 messages: [
                     {

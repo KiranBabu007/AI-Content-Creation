@@ -17,7 +17,7 @@ export async function POST(
     try {
         const { userId } = auth();
         const body = await req.json();
-        const { userMessage, messages } = body;
+        const { messages } = body;
 
         const freeTrial = await checkApiLimit();
 
@@ -26,7 +26,7 @@ export async function POST(
         }
 
 
-        await incrementApiLimit(userMessage);
+        await incrementApiLimit(messages);
 
         return NextResponse.json("success");
     } catch (error) {

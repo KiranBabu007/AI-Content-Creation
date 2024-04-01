@@ -61,8 +61,9 @@ const ImagePage = () => {
       const response1 = await axios.post('/api/conversation', { messages: userMessage });
 
       const response = await client.images.generate({
-        model: "stabilityai/stable-diffusion-xl-base-1.0",
+        model: "prompthero/openjourney",
         prompt: values.prompt,
+        
 
       });
 

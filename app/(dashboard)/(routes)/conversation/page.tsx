@@ -62,7 +62,7 @@ const ConversationPage = () => {
                         content: userMessage,
                     },
                 ],
-                model: 'codellama/CodeLlama-70b-Instruct-hf',
+                model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
             });
 
             const assistantMessage = response2.choices[0].message.content;

@@ -61,10 +61,8 @@ const ImagePage = () => {
       const response1 = await axios.post('/api/conversation', { messages: userMessage });
 
       const response = await client.images.generate({
-        model: "prompthero/openjourney",
-        prompt: values.prompt,
-        
-
+        model: "SG161222/Realistic_Vision_V3.0_VAE",
+        prompt: values.prompt
       });
 
       const imageUrl = response.data[0].b64_json; // Directly extract the UR
@@ -185,7 +183,7 @@ const ImagePage = () => {
                     alt="Generated image"
                   />
                 </div>
-                
+
               </Card>
             ))}
           </div>

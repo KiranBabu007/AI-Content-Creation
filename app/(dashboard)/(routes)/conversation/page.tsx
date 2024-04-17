@@ -55,7 +55,7 @@ const ConversationPage = () => {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are an expert of everything your name is Gen-x Genie.',
+                        content: 'You are an electrical expert give users adivce on what they ask',
                     },
                     {
                         role: 'user',

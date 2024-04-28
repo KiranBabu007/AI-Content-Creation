@@ -23,6 +23,7 @@
 - **Next.js**: A React framework for server-side rendering, static site generation, and building modern web applications.
 
 - **Supabase**: An open-source Firebase alternative that provides a backend-as-a-service solution, including a PostgreSQL database, authentication, and storage.
+  - Prisma is used as the ORM for interacting with the Supabase database.
 
 - **Clerk**: A user authentication and onboarding solution that simplifies the process of adding secure authentication to web applications.
 

@@ -39,3 +39,6 @@
 
 2. **Customizable Quota System**: Implementing a more flexible and customizable quota system to accommodate different user needs and subscription plans.
 
+
+**Hosted Link**:https://genai-x.vercel.app/
+

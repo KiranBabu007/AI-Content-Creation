@@ -8,7 +8,7 @@
 
 <p>Gen-X offers the following solutions:</p>
 
-- **Image Generation**: Users can generate unique and visually appealing images using state-of-the-art AI image generation technology. This feature is particularly useful for creating captivating visuals for social media, marketing campaigns, or personal projects.
+- **Image Generation**: Users can generate unique and visually appealing images using AI image generation technology. This feature is particularly useful for creating captivating visuals for social media, marketing campaigns, or personal projects.
 
 - **Conversational AI**: Gen-X incorporates a conversational AI system that allows users to generate text content based on prompts. By providing specific prompts, users can create blog posts, articles, scripts, or any other written content tailored to their needs.
 
@@ -24,7 +24,8 @@
 
 - **Clerk**: A user authentication and onboarding solution that simplifies the process of adding secure authentication to web applications.
 
-- **AI Content Generation APIs**: Gen-X integrates with state-of-the-art AI content generation APIs for image generation and conversational AI capabilities.
+- **AI Content Generation APIs**: Gen-X integrates with AI content generation APIs from TogetherAI for image generation and conversational AI capabilities.
+ 
 
 ## Future Plans
 

@@ -1,9 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 import OpenAI from "openai";
-
 
 const client = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -24,8 +22,6 @@ export async function POST(
         if (!freeTrial) {
             return new NextResponse("Free trial has expired. Please upgrade to pro.", { status: 403 });
         }
-
-
         await incrementApiLimit(messages);
 
         return NextResponse.json("success");

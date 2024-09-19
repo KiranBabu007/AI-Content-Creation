@@ -47,8 +47,6 @@ const ImagePage = () => {
     dangerouslyAllowBrowser: true
   });
 
-
-
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -62,7 +60,7 @@ const ImagePage = () => {
         prompt: values.prompt,
       });
 
-      const imageUrl = response.data[0]?.b64_json; // Directly extract the UR
+      const imageUrl = response.data[0]?.b64_json; 
 
       if (imageUrl) {
         setImages([imageUrl]);

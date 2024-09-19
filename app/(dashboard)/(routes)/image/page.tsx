@@ -48,8 +48,7 @@ const ImagePage = () => {
   // });
 
   const client = new Together({
-    apiKey: process.env['NEXT_PUBLIC_OPENAI_API_KEY'],
-    dangerouslyAllowBrowser: true
+    apiKey: process.env['NEXT_PUBLIC_OPENAI_API_KEY']
   });
 
   const isLoading = form.formState.isSubmitting;
@@ -60,11 +59,9 @@ const ImagePage = () => {
       const userMessage = values.prompt;
       const response1 = await axios.post('/api/conversation', { messages: userMessage });
 
-      const response = await client.images.generate({
+      const response = await client.images.create({
         model: "stabilityai/stable-diffusion-xl-base-1.0",
         prompt: values.prompt,
-
-
       });
 
       const imageUrl = response.data[0].b64_json; // Directly extract the UR

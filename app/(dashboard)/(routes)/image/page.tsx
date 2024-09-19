@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import Together from 'together-ai';
 
 const ImagePage = () => {
 
@@ -40,16 +41,18 @@ const ImagePage = () => {
     }
   });
 
-  const client = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    baseURL: 'https://api.together.xyz/v1',
+  // const client = new OpenAI({
+  //   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  //   baseURL: 'https://api.together.xyz/v1',
+  //   dangerouslyAllowBrowser: true
+  // });
+
+  const client = new Together({
+    apiKey: process.env['NEXT_PUBLIC_OPENAI_API_KEY'],
     dangerouslyAllowBrowser: true
   });
 
-
   const isLoading = form.formState.isSubmitting;
-
-
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {

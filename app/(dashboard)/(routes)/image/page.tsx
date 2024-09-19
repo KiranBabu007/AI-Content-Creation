@@ -26,10 +26,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-
-
-
-
 const ImagePage = () => {
 
   const router = useRouter();
@@ -50,6 +46,7 @@ const ImagePage = () => {
     dangerouslyAllowBrowser: true
   });
 
+
   const isLoading = form.formState.isSubmitting;
 
 
@@ -61,7 +58,7 @@ const ImagePage = () => {
       const response1 = await axios.post('/api/conversation', { messages: userMessage });
 
       const response = await client.images.generate({
-        model: "Stable Diffusion XL 1.0",
+        model: "stabilityai/stable-diffusion-xl-base-1.0",
         prompt: values.prompt,
 
 

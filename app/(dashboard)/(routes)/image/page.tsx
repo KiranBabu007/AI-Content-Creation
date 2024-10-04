@@ -37,7 +37,7 @@ const ImagePage = () => {
     defaultValues: {
       prompt: "",
       amount: "1",
-      resolution: "512x512"
+      resolution: "1024x1024"
     }
   });
 
@@ -80,6 +80,37 @@ const ImagePage = () => {
       router.refresh();
     }
   }
+
+  const downloadImage = async (src: string) => {
+    try {
+      // Fetch the image from the URL
+      const response = await fetch(src);
+
+      // Convert the response into a blob
+      const blob = await response.blob();
+
+
+      const url = window.URL.createObjectURL(blob);
+
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'generated-image.png');
+
+
+      document.body.appendChild(link);
+
+
+      link.click();
+
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
+
 
   return (
     <div>
@@ -171,19 +202,29 @@ const ImagePage = () => {
           {images.length === 0 && !isLoading && (
             <Empty label="No Images Generated." />
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+          <div className="flex flex-col justify-center items-center gap-4 mt-8">
             {images.map((src) => (
-              <Card key={src} className="rounded-lg overflow-hidden">
-                <div className="relative aspect-square">
+              <Card key={src} className="rounded-lg overflow-hidden h-[auto] w-[auto] flex flex-col lg:flex-row items-center justify-between gap-4">
+                <div className="relative">
                   <Image
                     src={src}
-                    fill
+                    width={512}
+                    height={512}
                     alt="Generated image"
                   />
                 </div>
 
               </Card>
+
             ))}
+            <Button
+              className="lg:ml-4"
+              onClick={() => downloadImage(images[0])}
+              variant="outline"
+              disabled={isLoading}
+            >
+              <Download className="mr-2 h-4 w-4" /> Download
+            </Button>
           </div>
 
         </div>

@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        domains: ['api.together.ai', 'bfstorage.blob.core.windows.net'], // Add the necessary domains
+    },
+};
 
 export default nextConfig;

@@ -43,8 +43,8 @@ const ImagePage = () => {
 
   const client = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    baseURL: 'https://api.together.xyz/v1',
-    dangerouslyAllowBrowser: true
+    baseURL: "https://api.together.xyz/v1",
+    dangerouslyAllowBrowser: true,
   });
 
   const isLoading = form.formState.isSubmitting;
@@ -56,11 +56,13 @@ const ImagePage = () => {
       const response1 = await axios.post('/api/conversation', { messages: userMessage });
 
       const response = await client.images.generate({
-        model: "stabilityai/stable-diffusion-xl-base-1.0",
+        model: "black-forest-labs/FLUX.1-schnell-Free",
         prompt: values.prompt,
       });
 
-      const imageUrl = response.data[0]?.b64_json; 
+
+      const imageUrl = response.data[0].url;
+      console.log(imageUrl);
 
       if (imageUrl) {
         setImages([imageUrl]);
@@ -174,7 +176,7 @@ const ImagePage = () => {
               <Card key={src} className="rounded-lg overflow-hidden">
                 <div className="relative aspect-square">
                   <Image
-                    src={`data:image/png;base64,${src}`}
+                    src={src}
                     fill
                     alt="Generated image"
                   />

@@ -42,12 +42,7 @@ const ConversationPage = () => {
 
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // const freeTrial = await checkApiLimit();
-        // if (!freeTrial) {
-        //     setLimit(true)
-        //     console.log("Limit Reached")
-        //     return
-        // }
+        
         try {
             const userMessage = values.prompt;
             const response1 = await axios.post('/api/conversation', { messages: userMessage });
@@ -55,7 +50,7 @@ const ConversationPage = () => {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are an electrical expert give users adivce on what they ask',
+                        content: 'You are a friendly and helpful conversational AI. Engage with users in a natural, informative, and polite manner. Assist with general queries, provide advice, and adapt to the user’s needs.',
                     },
                     {
                         role: 'user',
